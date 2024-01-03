@@ -85,10 +85,28 @@ const App = () => {
     }
   };
 
+  const handlePathClick = (folderId: string) => {
+    const folderIndex = history.indexOf(folderId);
+    if (folderIndex !== -1) {
+      setHistory(prevHistory => prevHistory.slice(0, folderIndex + 1));
+      setCurrentFolderId(folderId);
+    }
+  };
+
   return (
     <div className="grid justify-items-center justify-center content-center mt-10">
+
+      <div className="flex justify-items-center justify-center content-center mt-5 border-blue-500 border-2">
+        {history.map((folderId, index) => (
+          <React.Fragment key={folderId}>
+            <div onClick={() => handlePathClick(folderId)}>{folders[folderId].name}</div>
+            {index < history.length - 1 && ' / '}
+          </React.Fragment>
+        ))}
+      </div>
+      
       <div className="flex justify-items-center justify-center content-center mt-5 mb-5">
-        <button onClick={handleBackClick}>Back</button>
+        <button onClick={handleBackClick}>Upper Folder</button>
       </div>
 
       <div className="flex justify-items-center justify-center content-center mt-5">
@@ -98,6 +116,7 @@ const App = () => {
       <div className="flex justify-items-center justify-center content-center mt-5">
         <button onClick={handleAddFolder}>Add Folder</button>
       </div>
+
     </div>
   );
 };
