@@ -21,9 +21,9 @@ const Folder: React.FC<FolderProps> = ({ folder, onFolderClick, folders, current
   };
 
   return (
-    <div>
+    <div className='border-blue-400 border-2 rounded p-2 my-2'>
       {folder.id !== currentFolderId && <div onClick={handleFolderClick}>{folder.name}</div>}
-      <div>
+      <div className='grid grid-cols-3 justify-items-center'>
         {Object.keys(folder.subFolders)
           .filter((subFolderId) => folders[subFolderId].parentFolderId === currentFolderId)
           .map((subFolderId) => (
@@ -94,26 +94,26 @@ const App = () => {
   };
 
   return (
-    <div className="grid justify-items-center justify-center content-center mt-10">
+    <div className="grid grid-cols-1 mt-10 max-w-4xl mx-auto">
 
-      <div className="flex justify-items-center justify-center content-center mt-5 border-blue-500 border-2">
+      <div className="flex justify-items-center p-2 bg-blue-200 w-auto justify-center content-center mt-5 border-2 rounded">
         {history.map((folderId, index) => (
           <React.Fragment key={folderId}>
-            <div onClick={() => handlePathClick(folderId)}>{folders[folderId].name}</div>
+            <div className='p-1 border-black' onClick={() => handlePathClick(folderId)}>{folders[folderId].name}</div>
             {index < history.length - 1 && ' / '}
           </React.Fragment>
         ))}
       </div>
       
-      <div className="flex justify-items-center justify-center content-center mt-5 mb-5">
+      <div className="flex justify-items-center p-2 w-1/4 m-auto bg-blue-500 justify-center content-center mt-5 border-blue-500 border-2 rounded">
         <button onClick={handleBackClick}>Upper Folder</button>
       </div>
 
-      <div className="flex justify-items-center justify-center content-center mt-5">
+      <div className=" p-1 min-h-10 min-w-20 mt-5 grid-cols-3 border-blue-500 border-2 rounded">
         <Folder folder={folders[currentFolderId]} onFolderClick={handleFolderClick} folders={folders} currentFolderId={currentFolderId} />
       </div>
 
-      <div className="flex justify-items-center justify-center content-center mt-5">
+      <div className="flex justify-items-center p-2 w-1/4 m-auto bg-blue-500 justify-center content-center mt-5 border-blue-500 border-2 rounded">
         <button onClick={handleAddFolder}>Add Folder</button>
       </div>
 
