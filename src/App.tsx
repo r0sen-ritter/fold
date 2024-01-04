@@ -110,7 +110,7 @@ const App = () => {
       <div className="flex justify-items-center p-2 shadow-sm w-auto justify-center content-center mt-5 border-2 rounded">
       {getFolderPath(currentFolderId).map((folder, index, array) => (
         <span key={folder.id}>
-          <button onClick={() => handleFolderClick(folder.id)}>{folder.name}</button>
+          <button className='m-auto shadow-md hover:text-white hover:scale-110 transition duration-150 hover:bg-blue-400 rounded p-2' onClick={() => handleFolderClick(folder.id)}>{folder.name}</button>
           {index < array.length - 1 && ' / '}
         </span>
       ))}
