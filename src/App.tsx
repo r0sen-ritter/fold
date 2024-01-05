@@ -7,6 +7,7 @@ type Folder = {
     childFolderId: string[];
     id: string;
     name: string;
+    folderColorHex: string
 }
 
 const customStyles = {
@@ -26,13 +27,20 @@ const customStyles = {
   }
 };
 
+const colorHexList = {
+1:"#84a0d0",
+2:"#a6ccd3",
+3:"#d0bcd2",
+4:"#f38488"
+}
+
 const App = () => {
 
   const [folders, setFolders] = useState<Folder[]>([
-    {id:"root", parentFolderId:"", childFolderId:["1","2"], name:"Home"},
-    {id:"1", parentFolderId:"root", childFolderId:["3"], name:"First Child 1"},
-    {id:"2", parentFolderId:"root", childFolderId:[], name:"First Child 2"},
-    {id:"3", parentFolderId:"1", childFolderId:[], name:"Child of First Child 1"}
+    {id:"root", parentFolderId:"", childFolderId:["1","2"], name:"Home", folderColorHex:""},
+    {id:"1", parentFolderId:"root", childFolderId:["3"], name:"First Child 1", folderColorHex:""},
+    {id:"2", parentFolderId:"root", childFolderId:[], name:"First Child 2", folderColorHex:""},
+    {id:"3", parentFolderId:"1", childFolderId:[], name:"Child of First Child 1", folderColorHex:""}
   ]);
   const [currentFolderId, setCurrentFolderId] = useState<string>('root');
   const [newFolderName, setNewFolderName] = useState<string>('');
@@ -52,7 +60,8 @@ const App = () => {
         id: uuidv4(),
         parentFolderId: currentFolderId,
         childFolderId: [],
-        name: newFolderName
+        name: newFolderName,
+        folderColorHex:""
       };
       const updatedFolders = folders.map(folder => 
         folder.id === currentFolderId 
@@ -89,6 +98,18 @@ const App = () => {
     }
     closeModal();
   };
+ 
+  const handleSortAlphabetically = () => {
+    const sortedFolders = [...folders].sort((a, b) => a.name.localeCompare(b.name));
+    setFolders(sortedFolders);
+  }
+
+  const handleColorHex = (folderId: string, newColor: string) => {
+    const updatedFolders = folders.map(folder => 
+      folder.id === folderId ? {...folder, folderColorHex: newColor} : folder
+    );
+    setFolders(updatedFolders);
+  }
 
   const openModal = (folder: Folder) => {
     setFolderToDelete(folder);
@@ -101,6 +122,10 @@ const App = () => {
   
   return (
     <div className="grid grid-cols-1 mt-10 max-w-4xl mx-auto">
+
+      <div className="flex justify-items-center p-2 w-2/4 m-auto shadow-sm justify-center content-center mt-5 border-2 rounded">
+      <button className='m-auto shadow-md hover:text-white hover:scale-110 transition duration-150 hover:bg-blue-400 rounded p-2' onClick={handleSortAlphabetically}>Sort Alphabetically</button>
+      </div>
 
       <div className="flex justify-items-center p-2 w-2/4 m-auto shadow-sm justify-center content-center mt-5 border-2 rounded">
       <input className='rounded text-center mx-auto' type="text" value={newFolderName} onChange={(e) => setNewFolderName(e.target.value)} placeholder="New Folder Name" />
@@ -116,13 +141,12 @@ const App = () => {
       ))}
       </div>
 
-      <div className="p-1 min-h-10 min-w-20 mt-5 grid grid-cols-3 shadow-sm border-2 rounded" style={{
-        gap: "1rem"
-      }}>
+      <div className="p-1 min-h-10 min-w-20 mt-5 grid grid-cols-3 shadow-sm border-2 rounded " style={{gap: "1rem"}}>
 
         {childFolders.map(folder => (
           <div className='p-2 justify-items-center m-2 border-1 shadow-md hover:scale-105 transition duration-300 justify-between flex rounded' key={folder.id} onClick={() => handleFolderClick(folder.id)}>
             <div className='flex gap-2'>
+            <select></select>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
 </svg>
